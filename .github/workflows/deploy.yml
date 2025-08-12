@@ -18,11 +18,11 @@ jobs:
     steps:
       # 1. Baixa o código
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. Configura Node.js
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
@@ -40,11 +40,11 @@ jobs:
 
       # 5. Upload do build como artifact
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
       # 6. Deploy para GitHub Pages
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4

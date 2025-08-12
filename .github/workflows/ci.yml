@@ -14,11 +14,11 @@ jobs:
     steps:
       # 1. Baixa o código
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # 2. Configura o Node.js
       - name: Configurar Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'  # Cache para ser mais rápido
