@@ -1,6 +1,4 @@
-name: CI - Testes e Validação
-
-# Quando rodar: em pushes e pull requests para main
+name: CI
 on:
   push:
     branches: [ main ]
@@ -8,50 +6,24 @@ on:
     branches: [ main ]
 
 jobs:
-  test-and-build:
+  test-and-lint:  # Nome claro para CI
     runs-on: ubuntu-latest
-
     steps:
-      # 1. Baixa o código
-      - name: Checkout do código
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configura o Node.js
-      - name: Configurar Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'  # Cache para ser mais rápido
+          cache: 'npm'
 
-      # 3. Instala dependências
-      - name: Instalar dependências
-        run: npm ci  # ci é mais rápido que install
+      - name: Install dependencies
+        run: npm ci
 
-      # 4. Verifica lint (qualidade do código)
-      - name: Verificar ESLint
+      - name: Run lint
         run: npm run lint
-        continue-on-error: true  # Não falha se tiver warnings
+        continue-on-error: true
 
-      # 5. Roda os testes (se tiver)
-      - name: Rodar testes
-        run: |
-          if [ -f "vite.config.js" ]; then
-            echo "✅ Projeto Vite detectado"
-          fi
-          # Se você adicionar testes depois, descomente:
-          # npm test
-
-      # 6. Tenta fazer o build
-      - name: Build do projeto
+      - name: Build project
         run: npm run build
-
-      # 7. Verifica se o build funcionou
-      - name: Verificar build
-        run: |
-          if [ -d "dist" ]; then
-            echo "✅ Build criado com sucesso!"
-            ls -la dist/
-          else
-            echo "❌ Falha no build"
-            exit 1
-          fi
