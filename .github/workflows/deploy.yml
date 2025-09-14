@@ -2,6 +2,8 @@ name: CD
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -9,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-  deploy:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -27,10 +29,22 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check if PR or Main
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "🔍 Preview build para PR"
+            echo "Arquivos prontos para deploy:"
+            ls -la dist/
+          else
+            echo "🚀 Deploy para produção"
+          fi
+
       - name: Upload artifact
+        if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
       - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main'
         uses: actions/deploy-pages@v4
