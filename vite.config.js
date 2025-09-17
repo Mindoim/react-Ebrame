@@ -8,5 +8,12 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: './src/test/setup.js',
+    reporters: process.env.GITHUB_ACTIONS
+        ? ['default', 'github-actions']
+        : ['default'],
+    coverage: {
+      reporter: ['text', 'json-summary', 'lcov'],
+      exclude: ['node_modules/', 'src/test/']
+    }
   }
 })
