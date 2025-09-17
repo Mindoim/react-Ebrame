@@ -3,5 +3,10 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // Mudei de '/react-Ebrame/' para '/'
+  base: '/',
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    setupFiles: './src/test/setup.js',
+  }
 })
